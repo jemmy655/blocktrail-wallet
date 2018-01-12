@@ -77,7 +77,7 @@ angular.module('blocktrail.wallet').run(
         $rootScope.isAndroid = ionic.Platform.isAndroid();
         $rootScope.isIOS = ionic.Platform.isIOS();
 
-        $rootScope.$watch("readOnlySdkServiceData.networkType", function(newValue, oldValue) {
+        $rootScope.$watch("readOnlySdkServiceData.networkType", function (newValue, oldValue) {
             if (newValue !== oldValue) {
                 var network = CONFIG.NETWORKS[newValue].NETWORK;
                 if (network.substr(0, 1) === "t") {
@@ -112,6 +112,19 @@ angular.module('blocktrail.wallet').run(
                 GappTrack.track(CONFIG.GAPPTRACK_ID, CONFIG.GAPPTRACK_ACTIVATE_LABELS.iOS, "1.00", false);
             } else if ($rootScope.isAndroid && CONFIG.GAPPTRACK_ACTIVATE_LABELS.android) {
                 GappTrack.track(CONFIG.GAPPTRACK_ID, CONFIG.GAPPTRACK_ACTIVATE_LABELS.android, "1.00", false);
+            }
+        }
+
+        if (CONFIG.APPSFLYER) {
+            if ($rootScope.isIOS) {
+                window.plugins.appsFlyer.initSdk({
+                    devKey: CONFIG.APPSFLYER.KEY.iOS,
+                    appId: CONFIG.APPSFLYER.APPID.iOS
+                });
+            } else {
+                window.plugins.appsFlyer.initSdk({
+                    devKey: CONFIG.APPSFLYER.KEY.android
+                });
             }
         }
 
